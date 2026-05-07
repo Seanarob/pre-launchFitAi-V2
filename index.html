@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+<!DOC
+TYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -147,6 +148,20 @@
   .page > *:nth-child(4) { animation-delay: 0.18s; }
   .page > *:nth-child(5) { animation-delay: 0.22s; }
   .page > *:nth-child(6) { animation-delay: 0.26s; }
+
+  /* TWO-STEP POST SUBMIT */
+  .step-confirm { display:none; flex-direction:column; align-items:center; gap:1rem; text-align:center; padding:0.5rem 0; }
+  .step-confirm-icon { width:48px;height:48px;background:var(--blue-dim);border:1px solid rgba(59,130,246,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center; }
+  .step-confirm-icon svg { width:22px;height:22px;stroke:var(--blue);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round; }
+  .step-confirm h3 { font-size:1rem;font-weight:600;letter-spacing:-0.01em; }
+  .step-confirm p { font-size:13px;color:var(--text-muted);line-height:1.6; }
+  .sms-upsell { display:none; flex-direction:column; gap:10px; width:100%; padding-top:0.5rem; border-top:1px solid var(--border); margin-top:0.5rem; }
+  .sms-upsell p { font-size:13px;color:var(--text-muted);text-align:center;line-height:1.5; }
+  .sms-upsell p strong { color:var(--text); }
+  .sms-yes { width:100%;height:46px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:14px;font-weight:600;font-family:"Inter",sans-serif;cursor:pointer;transition:background 0.15s; }
+  .sms-yes:hover { background:var(--blue-dark); }
+  .sms-no { background:none;border:none;font-size:12px;color:var(--text-dim);cursor:pointer;font-family:"Inter",sans-serif;text-align:center;padding:4px; }
+  .sms-no:hover { color:var(--text-muted); }
 </style>
 </head>
 <body>
@@ -179,22 +194,19 @@
     </div>
     <div class="gift-open" id="giftOpen">
       <div class="gift-open-header">
-        <div><div class="gift-open-label">Founding member offer</div><div class="gift-open-title">Lifetime access — one time</div></div>
-        <div><div class="gift-open-original">$9.99/mo at launch</div><div class="gift-open-price">$7</div><div class="gift-open-sub">one-time · forever</div></div>
+        <div><div class="gift-open-label">Your gift 🎁</div><div class="gift-open-title">Exclusive early access discount</div></div>
+        <div><div class="gift-open-original">$9.99/mo at launch</div><div class="gift-open-price">$7<span style="font-size:14px;font-weight:500">/mo</span></div><div class="gift-open-sub">forever · just for you</div></div>
       </div>
       <div class="gift-open-body">
         <div class="perks">
-          <div class="perk"><div class="perk-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>All features, forever — no subscription ever</div>
+          <div class="perk"><div class="perk-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>$7/mo forever — locked in for life</div>
           <div class="perk"><div class="perk-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>Early access before public launch</div>
           <div class="perk"><div class="perk-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>Shape the product — direct feedback line</div>
           <div class="perk"><div class="perk-check"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>Founding member badge in-app</div>
         </div>
         <div class="divider"></div>
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <button class="claim-btn" id="claimBtn" onclick="handleGiftClaim()"><span id="claimText">Reserve my founding spot</span><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
-          <div class="no-charge-banner"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span><strong>No charge today</strong> — we'll follow up before launch</span></div>
-          <button class="skip-btn" onclick="skipGift()" style="text-align:center;width:100%;">No thanks, just notify me</button>
-        </div>
+        <div class="no-charge-banner"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span><strong>No charge today</strong> — we'll follow up before launch</span></div>
+        <button class="skip-btn" onclick="closeOverlay()" style="text-align:center;width:100%;margin-top:4px;">Close</button>
       </div>
     </div>
     <div class="gift-claimed" id="giftClaimed">
@@ -218,6 +230,16 @@
     <div class="badge"><div class="badge-dot"></div>Pre-launch sign up</div>
     <h1>Your personal trainer.<br><span>Powered by AI.</span></h1>
     <p class="pre-label">App isn't live yet — put your name on the list &amp; get a special gift from us.</p>
+  </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+    <button class="btn" id="ctaBtn" onclick="openFormModal()" style="max-width:360px;width:100%;height:54px;font-size:16px;">
+      Get Early Access + My Gift 🎁
+    </button>
+    <div style="display:flex;align-items:center;gap:6px;">
+      <span style="color:#f59e0b;font-size:12px;">★★★★★</span>
+      <span style="font-size:11px;color:var(--text-dim);">Joined by 247 early members · No spam ever</span>
+    </div>
   </div>
 
   <!-- CAROUSEL -->
@@ -325,27 +347,12 @@
   <div class="gift-teaser-card">
     <div class="gift-teaser-emoji">🎁</div>
     <div class="gift-teaser-copy">
-      <strong>Special gift for early sign ups</strong>
-      <span>Put your name on the list and we'll have something waiting for you.</span>
+      <strong>Free gift waiting for you 🎁</strong>
+      <span>Sign up and we'll send it instantly — no catch.</span>
     </div>
   </div>
 
   <!-- SIGNUP -->
-  <div class="signup-card">
-    <p class="card-label">Drop your info below — we'll text you the moment we go live.</p>
-    <form id="signupForm" onsubmit="handleSignup(event)" novalidate style="display:flex;flex-direction:column;gap:10px;">
-      <div><label class="field-label" for="s-name">First Name</label><input type="text" id="s-name" name="name" placeholder="Alex" required /></div>
-      <div><label class="field-label" for="s-phone">Phone Number</label><input type="tel" id="s-phone" name="phone" placeholder="+1 (555) 000-0000" required /></div>
-      <div style="margin-top:4px;display:flex;flex-direction:column;gap:8px;">
-        <button type="submit" class="btn" id="signupBtn">
-          <span id="signupBtnText">Put my name on the list</span>
-          <svg class="btn-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </button>
-        <p class="privacy">No spam, ever. Unsubscribe anytime.</p>
-      </div>
-    </form>
-  </div>
-
   <p class="footer">© 2025 FIT AI · All rights reserved</p>
 </div>
 
@@ -434,12 +441,18 @@ function handleSignup(e) {
   e.preventDefault();
   signupName = document.getElementById("s-name").value.trim();
   signupPhone = document.getElementById("s-phone").value.trim();
-  if (!signupName || !signupPhone) { document.getElementById(!signupName ? "s-name" : "s-phone").focus(); return; }
+  if (!signupPhone || !signupName) { document.getElementById(!signupPhone ? "s-phone" : "s-name").focus(); return; }
   const btn = document.getElementById("signupBtn");
   btn.disabled = true;
-  document.getElementById("signupBtnText").textContent = "Saving...";
+  document.getElementById("signupBtnText").textContent = "Sending...";
   document.getElementById("signupForm").style.display = "none";
-  setTimeout(showOverlay, 400);
+  document.getElementById("confirmStep").style.display = "flex";
+  const ph = document.getElementById("confirmPhone");
+  if (ph) ph.textContent = signupPhone;
+  setTimeout(() => {
+    closeFormModal();
+    setTimeout(showOverlay, 400);
+  }, 1200);
 }
 function showOverlay() { document.getElementById("overlay").classList.add("visible"); launchConfetti(); }
 function closeOverlay() { document.getElementById("overlay").classList.remove("visible"); }
@@ -465,6 +478,54 @@ function launchConfetti() {
     setTimeout(()=>el.remove(),1400);
   }
 }
+
+function openFormModal() {
+  const modal = document.getElementById("formModal");
+  const card = document.getElementById("formModalCard");
+  modal.classList.add("visible");
+  setTimeout(() => card.style.transform = "translateY(0)", 10);
+  setTimeout(() => document.getElementById("s-phone").focus(), 400);
+}
+function closeFormModal() {
+  const modal = document.getElementById("formModal");
+  const card = document.getElementById("formModalCard");
+  card.style.transform = "translateY(100%)";
+  setTimeout(() => modal.classList.remove("visible"), 350);
+}
+function handleFormModalClick(e) {
+  if (e.target === document.getElementById("formModal")) closeFormModal();
+}
 </script>
+
+<!-- FORM MODAL -->
+<div class="overlay" id="formModal" onclick="handleFormModalClick(event)" style="align-items:flex-end;padding:0;">
+  <div id="formModalCard" style="background:var(--surface);border:1px solid var(--border2);border-radius:22px 22px 0 0;width:100%;max-width:480px;padding:1.75rem 1.5rem 2.5rem;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);position:relative;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+      <div>
+        <p style="font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);margin-bottom:3px;">Where should we send it?</p>
+        <p style="font-size:13px;color:var(--text-muted);">Your early access + gift, delivered instantly.</p>
+      </div>
+      <button onclick="closeFormModal()" style="background:none;border:none;cursor:pointer;color:var(--text-dim);font-size:20px;line-height:1;padding:4px;">✕</button>
+    </div>
+    <form id="signupForm" onsubmit="handleSignup(event)" novalidate style="display:flex;flex-direction:column;gap:10px;">
+      <div><label class="field-label" for="s-phone">Phone Number</label><input type="tel" id="s-phone" name="phone" placeholder="+1 (555) 000-0000" required /></div>
+      <div><label class="field-label" for="s-name">First Name</label><input type="text" id="s-name" name="name" placeholder="Alex" required /></div>
+      <div style="margin-top:4px;display:flex;flex-direction:column;gap:8px;">
+        <button type="submit" class="btn" id="signupBtn" style="height:52px;font-size:15px;">
+          <span id="signupBtnText">Send It To Me →</span>
+        </button>
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;">
+          <span style="color:#f59e0b;font-size:12px;">★★★★★</span>
+          <span style="font-size:11px;color:var(--text-dim);">No spam · Unsubscribe anytime</span>
+        </div>
+      </div>
+    </form>
+    <div class="step-confirm" id="confirmStep" style="padding:0.5rem 0;">
+      <div class="step-confirm-icon"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <h3>Check your phone in 2 minutes.</h3>
+      <p>We sent your early access to <strong id="confirmPhone"></strong>. Your gift is on the way 🎁</p>
+    </div>
+  </div>
+</div>
 </body>
 </html>
